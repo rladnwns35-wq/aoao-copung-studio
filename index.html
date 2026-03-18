@@ -1,0 +1,547 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>코평 — 대형 프로젝트 전문 개발사</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;700;900&family=Space+Mono:ital,wght@0,400;0,700;1,400&family=DM+Sans:ital,wght@0,300;0,400;0,500;0,700;1,300&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg:      #eef0f7;
+      --surface: #f5f6fb;
+      --white:   #ffffff;
+      --dark:    #0b0e1a;
+      --navy:    #111827;
+      --blue:    #1a4ef5;
+      --blue2:   #2d5cff;
+      --blue-dim:#c8d4ff;
+      --muted:   #6b7494;
+      --border:  rgba(26,78,245,0.10);
+      --text:    #0d1120;
+    }
+
+    *, *::before, *::after { margin:0; padding:0; box-sizing:border-box; }
+    html { scroll-behavior:smooth; }
+
+    body {
+      font-family:'DM Sans', 'Noto Sans KR', sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      overflow-x: hidden;
+    }
+
+    /* NAV */
+    nav {
+      position: fixed; top:0; left:0; right:0; z-index:200;
+      height: 62px;
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 0 52px;
+      background: rgba(238,240,247,0.80);
+      backdrop-filter: blur(18px);
+      border-bottom: 1px solid var(--border);
+    }
+    .logo {
+      font-family:'Noto Sans KR', sans-serif;
+      font-weight: 900; font-size: 20px;
+      color: var(--text); text-decoration: none; letter-spacing: -0.5px;
+    }
+    .logo em { color: var(--blue); font-style:normal; }
+    .nav-right { display:flex; align-items:center; gap:36px; }
+    .nav-right a {
+      font-size:14px; font-weight:500;
+      color: var(--muted); text-decoration:none; transition: color .2s;
+    }
+    .nav-right a:hover { color: var(--blue); }
+    .nav-cta {
+      background: var(--blue); color: white !important;
+      padding: 9px 22px; border-radius: 8px;
+      font-weight: 600 !important; font-size: 13px !important;
+      transition: background .2s, transform .15s !important;
+    }
+    .nav-cta:hover { background: var(--blue2) !important; transform:translateY(-1px); }
+
+    /* HERO */
+    .hero {
+      min-height: 100vh;
+      padding: 140px 52px 100px;
+      display: flex; flex-direction: column; justify-content: center;
+      position: relative; overflow: hidden;
+    }
+    .hero::before {
+      content:''; position:absolute; inset:0;
+      background-image:
+        linear-gradient(rgba(26,78,245,.04) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(26,78,245,.04) 1px, transparent 1px);
+      background-size: 48px 48px;
+      pointer-events:none;
+    }
+    .hero::after {
+      content:''; position:absolute;
+      top:-200px; right:-100px;
+      width:700px; height:700px;
+      background: radial-gradient(circle, rgba(26,78,245,0.10) 0%, transparent 65%);
+      pointer-events:none;
+    }
+    .hero-inner { position:relative; z-index:1; max-width: 860px; }
+    .hero-label {
+      display:inline-flex; align-items:center; gap:8px;
+      font-family:'Space Mono', monospace;
+      font-size:11px; letter-spacing:2px; text-transform:uppercase;
+      color: var(--blue); margin-bottom: 28px;
+    }
+    .hero-label::before {
+      content:''; width:28px; height:2px;
+      background: var(--blue); border-radius:2px;
+    }
+    .hero-h1 {
+      font-family:'Noto Sans KR', sans-serif;
+      font-weight:900;
+      font-size: clamp(52px, 7vw, 96px);
+      line-height: 1.00; letter-spacing: -3px;
+      color: var(--dark); margin-bottom: 8px;
+    }
+    .hero-h1 .stroke {
+      -webkit-text-stroke: 2px var(--blue);
+      color: transparent;
+    }
+    .hero-h1 .blue { color: var(--blue); }
+    .hero-sub {
+      font-family:'Space Mono', monospace;
+      font-size: clamp(13px, 1.5vw, 16px);
+      color: var(--muted);
+      margin-top: 24px; line-height: 1.9; max-width: 560px;
+    }
+    .hero-actions {
+      display:flex; gap:12px; align-items:center; margin-top: 44px;
+    }
+    .btn {
+      display:inline-flex; align-items:center; gap:8px;
+      padding:14px 28px; border-radius:10px;
+      font-family:'Noto Sans KR', sans-serif;
+      font-weight:700; font-size:15px;
+      cursor:pointer; text-decoration:none;
+      transition: all .2s; border:none;
+    }
+    .btn-fill {
+      background: var(--blue); color: white;
+      box-shadow: 0 4px 20px rgba(26,78,245,.25);
+    }
+    .btn-fill:hover { background: var(--blue2); transform:translateY(-2px); box-shadow:0 8px 28px rgba(26,78,245,.32); }
+    .btn-ghost {
+      background: transparent; color: var(--text);
+      border: 1.5px solid rgba(26,78,245,.2);
+    }
+    .btn-ghost:hover { border-color: var(--blue); color: var(--blue); }
+
+    /* marquee */
+    .marquee-wrap {
+      position:absolute; bottom:0; left:0; right:0;
+      overflow:hidden; border-top: 1px solid var(--border);
+      padding: 14px 0; background: rgba(255,255,255,0.4);
+    }
+    .marquee { display:flex; gap:48px; width:max-content; animation: marquee 22s linear infinite; }
+    .marquee-item {
+      font-family:'Space Mono', monospace;
+      font-size:12px; letter-spacing:1.5px;
+      color: var(--muted); text-transform:uppercase;
+      white-space:nowrap; display:flex; align-items:center; gap:16px;
+    }
+    .marquee-item::before { content:'◆'; color: var(--blue); font-size:8px; }
+    @keyframes marquee { from{transform:translateX(0)} to{transform:translateX(-50%)} }
+
+    /* NUMBERS */
+    .numbers {
+      background: var(--white);
+      padding: 60px 52px;
+      display:flex; justify-content:center;
+      border-bottom: 1px solid var(--border);
+    }
+    .numbers-inner {
+      max-width:1100px; width:100%;
+      display:grid; grid-template-columns:repeat(4,1fr);
+    }
+    .num-item { padding: 0 40px; position:relative; }
+    .num-item:not(:last-child)::after {
+      content:''; position:absolute; right:0; top:5%; bottom:5%;
+      width:1px; background: var(--border);
+    }
+    .num-val {
+      font-family:'Noto Sans KR', sans-serif;
+      font-weight:900; font-size:44px;
+      letter-spacing:-2px; color: var(--blue); line-height:1;
+    }
+    .num-unit { font-size:18px; font-weight:500; color: var(--muted); }
+    .num-label { margin-top:8px; font-size:13px; color: var(--muted); font-weight:500; }
+
+    /* ABOUT */
+    .about {
+      max-width:1100px; margin:0 auto;
+      padding: 110px 52px;
+      display:grid; grid-template-columns: 1fr 1fr;
+      gap: 80px; align-items:center;
+    }
+    .eyebrow {
+      font-family:'Space Mono', monospace;
+      font-size:11px; letter-spacing:2px; text-transform:uppercase;
+      color: var(--blue); margin-bottom:18px;
+    }
+    .section-h {
+      font-family:'Noto Sans KR', sans-serif;
+      font-weight:900;
+      font-size: clamp(30px, 3.5vw, 44px);
+      line-height:1.1; letter-spacing:-1.5px; color: var(--dark);
+    }
+    .section-h span { color: var(--blue); }
+    .about-body { margin-top:24px; font-size:15px; color: var(--muted); line-height:1.9; }
+    .about-body p + p { margin-top:14px; }
+    .about-right { display:grid; grid-template-columns:1fr 1fr; gap:14px; }
+    .about-chip {
+      background: var(--surface); border: 1px solid var(--border);
+      border-radius:12px; padding: 22px 20px; transition: all .22s;
+    }
+    .about-chip:hover { border-color: var(--blue); transform:translateY(-3px); box-shadow: 0 10px 28px rgba(26,78,245,0.10); }
+    .about-chip:first-child {
+      grid-column: span 2; background: var(--blue);
+    }
+    .about-chip:first-child .chip-icon { background: rgba(255,255,255,.15); color:white; }
+    .about-chip:first-child .chip-title { color:white; }
+    .about-chip:first-child .chip-sub { color:rgba(255,255,255,.6); }
+    .chip-icon {
+      width:40px; height:40px; background: var(--blue-dim);
+      border-radius:10px; display:flex; align-items:center; justify-content:center;
+      font-size:20px; margin-bottom:14px;
+    }
+    .chip-title { font-weight:700; font-size:15px; color: var(--dark); margin-bottom:5px; }
+    .chip-sub { font-size:12px; color: var(--muted); line-height:1.6; }
+
+    /* SERVICES */
+    .services {
+      background: var(--dark);
+      padding: 100px 52px; position:relative; overflow:hidden;
+    }
+    .services::before {
+      content:''; position:absolute; bottom:-200px; right:-100px;
+      width:600px; height:600px;
+      background: radial-gradient(circle, rgba(26,78,245,.18) 0%, transparent 65%);
+      pointer-events:none;
+    }
+    .services-inner { max-width:1100px; margin:0 auto; position:relative; z-index:1; }
+    .services-header { display:flex; justify-content:space-between; align-items:flex-end; margin-bottom:56px; }
+    .services .eyebrow { color: rgba(255,255,255,.35); }
+    .services .section-h { color: white; }
+    .see-all {
+      font-family:'Space Mono', monospace; font-size:12px; letter-spacing:1px;
+      color: var(--blue-dim); text-decoration:none;
+      display:flex; align-items:center; gap:8px; transition: gap .2s, color .2s;
+    }
+    .see-all:hover { color:white; gap:14px; }
+    .services-grid {
+      display:grid; grid-template-columns: 2fr 1fr 1fr;
+      grid-template-rows: auto auto; gap:16px;
+    }
+    .svc-card {
+      background: rgba(255,255,255,.04); border: 1px solid rgba(255,255,255,.07);
+      border-radius:16px; padding: 32px;
+      transition: all .25s; position:relative; overflow:hidden;
+    }
+    .svc-card::before {
+      content:''; position:absolute; bottom:0; left:0; right:0; height:2px;
+      background: var(--blue); transform:scaleX(0); transition:transform .3s; transform-origin:left;
+    }
+    .svc-card:hover { background: rgba(26,78,245,.10); border-color: rgba(26,78,245,.35); }
+    .svc-card:hover::before { transform:scaleX(1); }
+    .svc-card.featured { grid-row: span 2; background: var(--blue); border-color: transparent; }
+    .svc-card.featured::before { background: white; }
+    .svc-card.featured:hover { background: var(--blue2); }
+    .svc-tag {
+      font-family:'Space Mono', monospace; font-size:10px; letter-spacing:1.5px;
+      text-transform:uppercase; color: var(--blue-dim); margin-bottom:16px;
+    }
+    .svc-card.featured .svc-tag { color: rgba(255,255,255,.55); }
+    .svc-title { font-family:'Noto Sans KR', sans-serif; font-weight:700; font-size:20px; color: white; margin-bottom:10px; }
+    .svc-desc { font-size:13px; color: rgba(255,255,255,.45); line-height:1.75; }
+    .svc-card.featured .svc-desc { color: rgba(255,255,255,.7); }
+    .svc-num {
+      position:absolute; bottom:24px; right:28px;
+      font-family:'Space Mono', monospace; font-size:48px; font-weight:700;
+      color: rgba(255,255,255,.06); line-height:1;
+    }
+    .svc-card.featured .svc-num { color: rgba(255,255,255,.10); }
+
+    /* PROCESS */
+    .process { max-width:1100px; margin:0 auto; padding: 110px 52px; }
+    .process-header { text-align:center; margin-bottom:72px; }
+    .proc-item {
+      display:grid; grid-template-columns: 80px 1fr;
+      gap:40px; padding: 36px 0;
+      border-bottom: 1px solid var(--border);
+      align-items:start; transition: all .2s;
+    }
+    .proc-item:first-child { border-top: 1px solid var(--border); }
+    .proc-item:hover .proc-n { color: var(--blue); }
+    .proc-n {
+      font-family:'Space Mono', monospace; font-weight:700; font-size:32px;
+      color: var(--blue-dim); letter-spacing:-1px; line-height:1; transition: color .2s;
+    }
+    .proc-title { font-family:'Noto Sans KR', sans-serif; font-weight:700; font-size:20px; color: var(--dark); margin-bottom:8px; }
+    .proc-desc { font-size:14px; color: var(--muted); line-height:1.8; max-width:640px; }
+
+    /* PARENT BAND */
+    .parent-band {
+      background: var(--white); border-top: 1px solid var(--border); border-bottom: 1px solid var(--border); padding: 40px 52px;
+    }
+    .parent-inner { max-width:1100px; margin:0 auto; display:flex; align-items:center; gap:20px; }
+    .parent-label { font-family:'Space Mono', monospace; font-size:11px; letter-spacing:1.5px; color: var(--muted); text-transform:uppercase; }
+    .parent-divider { width:1px; height:28px; background: var(--border); }
+    .parent-name { font-family:'Noto Sans KR', sans-serif; font-weight:700; font-size:17px; color: var(--blue); }
+    .parent-desc { font-size:13px; color: var(--muted); margin-left:auto; font-style:italic; }
+
+    /* CTA */
+    .cta { padding: 110px 52px; text-align:center; }
+    .cta-inner { max-width:720px; margin:0 auto; }
+    .cta-h {
+      font-family:'Noto Sans KR', sans-serif; font-weight:900;
+      font-size: clamp(38px, 5vw, 64px); letter-spacing:-2px;
+      color: var(--dark); line-height:1.05; margin-bottom:18px;
+    }
+    .cta-h span { color: var(--blue); }
+    .cta-sub { font-size:15px; color: var(--muted); line-height:1.8; margin-bottom:40px; }
+    .cta-btns { display:flex; gap:12px; justify-content:center; }
+
+    /* FOOTER */
+    footer { background: var(--dark); padding: 52px; }
+    .footer-inner { max-width:1100px; margin:0 auto; display:flex; justify-content:space-between; align-items:center; }
+    .footer-logo { font-family:'Noto Sans KR', sans-serif; font-weight:900; font-size:22px; color: white; letter-spacing:-0.5px; }
+    .footer-logo em { color: var(--blue-dim); font-style:normal; }
+    .footer-meta { font-size:12px; color:rgba(255,255,255,.25); margin-top:4px; }
+    .footer-copy { font-family:'Space Mono', monospace; font-size:11px; color:rgba(255,255,255,.2); }
+
+    /* FADE-UP */
+    .fu { opacity:0; transform:translateY(28px); transition:opacity .65s ease, transform .65s ease; }
+    .fu.show { opacity:1; transform:translateY(0); }
+    .fu.d1 { transition-delay:.08s; } .fu.d2 { transition-delay:.16s; }
+    .fu.d3 { transition-delay:.24s; } .fu.d4 { transition-delay:.32s; }
+
+    @media(max-width:768px){
+      nav { padding:0 20px; }
+      .hero { padding:120px 20px 80px; }
+      .about { grid-template-columns:1fr; padding:60px 20px; gap:40px; }
+      .about-right { grid-template-columns:1fr; }
+      .about-chip:first-child { grid-column:span 1; }
+      .numbers { padding:40px 20px; }
+      .numbers-inner { grid-template-columns:repeat(2,1fr); gap:24px; }
+      .num-item::after { display:none; }
+      .services { padding:60px 20px; }
+      .services-grid { grid-template-columns:1fr; }
+      .svc-card.featured { grid-row:auto; }
+      .process { padding:60px 20px; }
+      .cta { padding:60px 20px; }
+      footer { padding:36px 20px; }
+      .footer-inner { flex-direction:column; gap:16px; text-align:center; }
+    }
+  </style>
+</head>
+<body>
+
+<nav>
+  <a href="#" class="logo"><em>코평</em></a>
+  <div class="nav-right">
+    <a href="#about">회사 소개</a>
+    <a href="#services">서비스</a>
+    <a href="#process">개발 방식</a>
+    <a href="#contact" class="nav-cta">프로젝트 문의</a>
+  </div>
+</nav>
+
+<section class="hero">
+  <div class="hero-inner">
+    <div class="hero-label">AOAO Studio 자회사 · 대형 프로젝트 전문</div>
+    <h1 class="hero-h1">
+      대형 프로젝트를<br>
+      <span class="stroke">끝까지</span> <span class="blue">완성합니다.</span>
+    </h1>
+    <p class="hero-sub">
+      코평(코딩평등)은 규모와 복잡도에 관계없이<br>
+      처음부터 끝까지 책임지고 만드는 개발 전문 스튜디오입니다.
+    </p>
+    <div class="hero-actions">
+      <a href="#contact" class="btn btn-fill">프로젝트 문의하기 →</a>
+      <a href="#services" class="btn btn-ghost">서비스 보기</a>
+    </div>
+  </div>
+  <div class="marquee-wrap">
+    <div class="marquee">
+      <span class="marquee-item">대형 플랫폼 개발</span>
+      <span class="marquee-item">엔터프라이즈 시스템</span>
+      <span class="marquee-item">풀스택 개발</span>
+      <span class="marquee-item">클라우드 아키텍처</span>
+      <span class="marquee-item">AI 통합 솔루션</span>
+      <span class="marquee-item">모바일 앱 개발</span>
+      <span class="marquee-item">AOAO Studio</span>
+      <span class="marquee-item">대형 플랫폼 개발</span>
+      <span class="marquee-item">엔터프라이즈 시스템</span>
+      <span class="marquee-item">풀스택 개발</span>
+      <span class="marquee-item">클라우드 아키텍처</span>
+      <span class="marquee-item">AI 통합 솔루션</span>
+      <span class="marquee-item">모바일 앱 개발</span>
+      <span class="marquee-item">AOAO Studio</span>
+    </div>
+  </div>
+</section>
+
+<div class="numbers">
+  <div class="numbers-inner">
+    <div class="num-item fu"><div class="num-val">50<span class="num-unit">+</span></div><div class="num-label">완료 프로젝트</div></div>
+    <div class="num-item fu d1"><div class="num-val">12<span class="num-unit">억+</span></div><div class="num-label">총 개발 규모</div></div>
+    <div class="num-item fu d2"><div class="num-val">5<span class="num-unit">개</span></div><div class="num-label">운영 중인 서비스</div></div>
+    <div class="num-item fu d3"><div class="num-val">98<span class="num-unit">%</span></div><div class="num-label">클라이언트 만족도</div></div>
+  </div>
+</div>
+
+<section class="about" id="about">
+  <div class="about-left fu">
+    <div class="eyebrow">// 코평이란</div>
+    <h2 class="section-h">복잡한 것도<br><span>끝까지</span> 만드는<br>팀입니다.</h2>
+    <div class="about-body">
+      <p>코평은 AOAO Studio의 자회사로, 대형 소프트웨어 프로젝트를 전문으로 합니다. 아이디어 단계에서 실제 운영까지, 중간에 흐지부지되지 않는 개발을 약속합니다.</p>
+      <p>젊은 개발자들로 구성된 팀이지만 타협 없는 퀄리티와 일정 준수를 최우선으로 삼습니다. 규모가 크다고 겁먹지 않습니다. 오히려 대형 프로젝트일수록 빛납니다.</p>
+    </div>
+  </div>
+  <div class="about-right">
+    <div class="about-chip fu">
+      <div class="chip-icon">🏗️</div>
+      <div class="chip-title">대형 프로젝트 전문</div>
+      <div class="chip-sub">소규모 프리랜서가 감당 못 하는 규모도 체계적으로 관리합니다</div>
+    </div>
+    <div class="about-chip fu d1">
+      <div class="chip-icon">⚙️</div>
+      <div class="chip-title">기술 스택 무제한</div>
+      <div class="chip-sub">웹·앱·AI·클라우드, 무엇이든 맞춥니다</div>
+    </div>
+    <div class="about-chip fu d2">
+      <div class="chip-icon">📋</div>
+      <div class="chip-title">투명한 프로세스</div>
+      <div class="chip-sub">매주 진행 상황 공유, 납기 지연 없음</div>
+    </div>
+  </div>
+</section>
+
+<section class="services" id="services">
+  <div class="services-inner">
+    <div class="services-header">
+      <div>
+        <div class="eyebrow">// 주요 서비스</div>
+        <h2 class="section-h">무엇이든<br>만들어드립니다</h2>
+      </div>
+      <a href="#contact" class="see-all">모든 서비스 보기 →</a>
+    </div>
+    <div class="services-grid">
+      <div class="svc-card featured fu">
+        <div class="svc-tag">Core Service</div>
+        <div class="svc-title">대형 플랫폼 개발</div>
+        <div class="svc-desc">수십만 사용자를 감당하는 플랫폼, 복잡한 비즈니스 로직, 대용량 데이터 처리까지. 단순 외주가 아닌 기술 파트너로서 함께 성장합니다.</div>
+        <div class="svc-num">01</div>
+      </div>
+      <div class="svc-card fu d1">
+        <div class="svc-tag">Enterprise</div>
+        <div class="svc-title">엔터프라이즈 시스템</div>
+        <div class="svc-desc">ERP, CRM, 사내 시스템 구축 및 레거시 마이그레이션</div>
+        <div class="svc-num">02</div>
+      </div>
+      <div class="svc-card fu d2">
+        <div class="svc-tag">Mobile</div>
+        <div class="svc-title">모바일 앱 개발</div>
+        <div class="svc-desc">iOS · Android · React Native 크로스플랫폼 앱</div>
+        <div class="svc-num">03</div>
+      </div>
+      <div class="svc-card fu d1">
+        <div class="svc-tag">AI / ML</div>
+        <div class="svc-title">AI 통합 솔루션</div>
+        <div class="svc-desc">GPT, 비전 AI, 추천 시스템을 기존 서비스에 통합</div>
+        <div class="svc-num">04</div>
+      </div>
+      <div class="svc-card fu d2">
+        <div class="svc-tag">Cloud</div>
+        <div class="svc-title">클라우드 아키텍처</div>
+        <div class="svc-desc">AWS·GCP·Azure 기반 확장 가능한 인프라 설계</div>
+        <div class="svc-num">05</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="process" id="process">
+  <div class="process-header fu">
+    <div class="eyebrow">// 개발 방식</div>
+    <h2 class="section-h">처음부터 끝까지<br><span>한 팀이 책임집니다</span></h2>
+  </div>
+  <div class="proc-item fu">
+    <div class="proc-n">01</div>
+    <div>
+      <div class="proc-title">요구사항 분석 & 기획</div>
+      <div class="proc-desc">클라이언트의 목표를 정확히 파악하고, 기술적 타당성 검토 및 명확한 스코프를 설정합니다. 처음부터 제대로 된 방향을 잡습니다.</div>
+    </div>
+  </div>
+  <div class="proc-item fu d1">
+    <div class="proc-n">02</div>
+    <div>
+      <div class="proc-title">아키텍처 설계</div>
+      <div class="proc-desc">확장성과 유지보수성을 고려한 기술 스택 선정, 시스템 아키텍처 및 DB 설계. 나중에 뒤집을 일이 없도록 앞에서 꼼꼼히 설계합니다.</div>
+    </div>
+  </div>
+  <div class="proc-item fu d2">
+    <div class="proc-n">03</div>
+    <div>
+      <div class="proc-title">애자일 개발 & 주간 보고</div>
+      <div class="proc-desc">2주 스프린트 단위로 개발하며 매주 진행 상황을 투명하게 공유합니다. 중간에 방향이 바뀌어도 유연하게 대응합니다.</div>
+    </div>
+  </div>
+  <div class="proc-item fu d3">
+    <div class="proc-n">04</div>
+    <div>
+      <div class="proc-title">QA · 배포 · 운영 지원</div>
+      <div class="proc-desc">철저한 테스트 후 배포, 이후 운영 안정화까지 책임집니다. 납품 후 사라지지 않습니다.</div>
+    </div>
+  </div>
+</section>
+
+<div class="parent-band">
+  <div class="parent-inner">
+    <div class="parent-label">Part of</div>
+    <div class="parent-divider"></div>
+    <div class="parent-name">AOAO Studio</div>
+    <div class="parent-desc">Building Better Technology — 젊은 개발자들이 만드는 실용적인 소프트웨어</div>
+  </div>
+</div>
+
+<section class="cta" id="contact">
+  <div class="cta-inner fu">
+    <div class="eyebrow" style="text-align:center;">// 프로젝트 문의</div>
+    <h2 class="cta-h">규모에 상관없이<br><span>함께합니다.</span></h2>
+    <p class="cta-sub">아이디어만 있어도 됩니다. 기획부터 배포까지,<br>코평 팀이 처음부터 끝까지 함께합니다.</p>
+    <div class="cta-btns">
+      <a href="mailto:hello@kopyeong.dev" class="btn btn-fill">프로젝트 문의하기 →</a>
+      <a href="#services" class="btn btn-ghost">서비스 둘러보기</a>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="footer-inner">
+    <div>
+      <div class="footer-logo"><em>코평</em> — 코딩평등</div>
+      <div class="footer-meta">AOAO Studio 자회사 · 대형 프로젝트 전문 개발사</div>
+    </div>
+    <div class="footer-copy">© 2025 코평 / AOAO Studio</div>
+  </div>
+</footer>
+
+<script>
+  const obs = new IntersectionObserver(entries => {
+    entries.forEach(e => { if(e.isIntersecting){ e.target.classList.add('show'); obs.unobserve(e.target); } });
+  }, { threshold: 0.12 });
+  document.querySelectorAll('.fu').forEach(el => obs.observe(el));
+</script>
+</body>
+</html>
