@@ -329,8 +329,9 @@
     .footer-copy { font-family:'Space Mono', monospace; font-size:11px; color:rgba(255,255,255,.2); }
 
     /* FADE-UP */
-    .fu { opacity:0; transform:translateY(28px); transition:opacity .65s ease, transform .65s ease; }
-    .fu.show { opacity:1; transform:translateY(0); }
+    .fu { opacity:1; transform:translateY(0); transition:opacity .65s ease, transform .65s ease; }
+    .fu.animate { opacity:0; transform:translateY(28px); }
+    .fu.animate.show { opacity:1; transform:translateY(0); }
     .fu.d1 { transition-delay:.08s; } .fu.d2 { transition-delay:.16s; }
     .fu.d3 { transition-delay:.24s; } .fu.d4 { transition-delay:.32s; }
 
@@ -361,7 +362,7 @@
     <a href="#about">회사 소개</a>
     <a href="#services">서비스</a>
     <a href="#process">개발 방식</a>
-    <a href="mailto:rladnwns54@gmail.com">문의하기</a>
+    <a href="/cdn-cgi/l/email-protection#e3918f82878d948d90d6d7a3848e828a8fcd808c8e">문의하기</a>
   </div>
 </nav>
 
@@ -377,7 +378,7 @@
       처음부터 끝까지 책임지고 만드는 개발 전문 스튜디오입니다.
     </p>
     <div class="hero-actions">
-      <a href="mailto:rladnwns54@gmail.com" class="btn btn-fill">프로젝트 문의하기 →</a>
+      <a href="/cdn-cgi/l/email-protection#ccbea0ada8a2bba2bff9f88caba1ada5a0e2afa3a1" class="btn btn-fill">프로젝트 문의하기 →</a>
       <a href="#services" class="btn btn-ghost">서비스 보기</a>
     </div>
   </div>
@@ -545,6 +546,4 @@
   </div>
 </footer>
 
-<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
-  const obs = new IntersectionObserver(entries => {
-    entries.forEach(e => { if(e.isIntersecting){ e.target.classList.add('show'); ob
+<script data-cfasync="false"
