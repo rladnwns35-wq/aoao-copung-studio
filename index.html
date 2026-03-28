@@ -328,6 +328,81 @@
     .footer-meta { font-size:12px; color:rgba(255,255,255,.25); margin-top:4px; }
     .footer-copy { font-family:'Space Mono', monospace; font-size:11px; color:rgba(255,255,255,.2); }
 
+    /* PROJECTS */
+    .projects {
+      background: var(--white);
+      padding: 110px 52px;
+      border-top: 1px solid var(--border);
+    }
+    .projects-inner { max-width:1100px; margin:0 auto; }
+    .projects-header { display:flex; justify-content:space-between; align-items:flex-end; margin-bottom:56px; }
+    .proj-grid {
+      display:grid; grid-template-columns: repeat(3, 1fr);
+      gap:20px;
+    }
+    .proj-card {
+      background: var(--surface);
+      border: 1.5px solid var(--border);
+      border-radius:16px; padding:28px;
+      display:flex; flex-direction:column; gap:14px;
+      transition: all .25s; position:relative; overflow:hidden;
+      text-decoration:none;
+    }
+    .proj-card::after {
+      content:''; position:absolute; top:0; left:0; right:0; height:3px;
+      background: linear-gradient(90deg, var(--blue), #7ca3ff);
+      transform: scaleX(0); transform-origin:left; transition: transform .3s;
+    }
+    .proj-card:hover { border-color: var(--blue); box-shadow: 0 12px 36px rgba(26,78,245,.10); transform:translateY(-4px); }
+    .proj-card:hover::after { transform:scaleX(1); }
+    .proj-card.main {
+      grid-column: span 2;
+      background: linear-gradient(135deg, #0f1f6e 0%, #1a3aaa 50%, #1a4ef5 100%);
+      border-color: transparent;
+    }
+    .proj-card.main:hover { box-shadow: 0 16px 48px rgba(26,78,245,.35); }
+    .proj-card.main::after { background: linear-gradient(90deg, white, rgba(255,255,255,.4)); }
+    .proj-tag {
+      font-family:'Space Mono', monospace; font-size:10px; letter-spacing:1.5px;
+      text-transform:uppercase; color: var(--blue); font-weight:700;
+    }
+    .proj-card.main .proj-tag { color: rgba(255,255,255,.5); }
+    .proj-name {
+      font-family:'Noto Sans KR', sans-serif; font-weight:900;
+      font-size:22px; color: var(--dark); letter-spacing:-0.5px; line-height:1.15;
+    }
+    .proj-card.main .proj-name { font-size:28px; color: white; }
+    .proj-desc { font-size:13px; color: var(--muted); line-height:1.75; flex:1; }
+    .proj-card.main .proj-desc { color: rgba(255,255,255,.65); font-size:14px; }
+    .proj-link {
+      display:inline-flex; align-items:center; gap:6px;
+      font-family:'Space Mono', monospace; font-size:11px;
+      letter-spacing:1px; text-transform:uppercase;
+      color: var(--blue); font-weight:700;
+      margin-top:4px; transition: gap .2s;
+    }
+    .proj-card:hover .proj-link { gap:10px; }
+    .proj-card.main .proj-link { color: rgba(255,255,255,.8); }
+    .proj-card.main:hover .proj-link { color: white; }
+    .proj-stack {
+      display:flex; flex-wrap:wrap; gap:6px; margin-top:4px;
+    }
+    .proj-badge {
+      padding:3px 10px; border-radius:99px; font-size:11px; font-weight:600;
+      background: rgba(26,78,245,.08); color: var(--blue);
+      border: 1px solid rgba(26,78,245,.12);
+    }
+    .proj-card.main .proj-badge {
+      background: rgba(255,255,255,.12); color: rgba(255,255,255,.8);
+      border-color: rgba(255,255,255,.15);
+    }
+
+    @media(max-width:768px){
+      .projects { padding:60px 20px; }
+      .proj-grid { grid-template-columns:1fr; }
+      .proj-card.main { grid-column:span 1; }
+    }
+
     /* FADE-UP */
     .fu { opacity:1; transform:translateY(0); transition:opacity .65s ease, transform .65s ease; }
     .fu.animate { opacity:0; transform:translateY(28px); }
@@ -362,6 +437,7 @@
     <a href="#about">회사 소개</a>
     <a href="#services">서비스</a>
     <a href="#process">개발 방식</a>
+    <a href="#projects">개발 프로젝트</a>
     <a href="/cdn-cgi/l/email-protection#e3918f82878d948d90d6d7a3848e828a8fcd808c8e">문의하기</a>
   </div>
 </nav>
@@ -526,6 +602,52 @@
     <div class="parent-desc">Building Better Technology — 젊은 개발자들이 만드는 실용적인 소프트웨어</div>
   </div>
 </div>
+
+<section class="projects" id="projects">
+  <div class="projects-inner">
+    <div class="projects-header fu">
+      <div>
+        <div class="eyebrow">// 개발 프로젝트</div>
+        <h2 class="section-h">직접 만든<br><span>서비스들</span></h2>
+      </div>
+      <a href="https://aoao-copung-student.onrender.com" target="_blank" class="see-all" style="color:var(--blue)">모든 프로젝트 보기 →</a>
+    </div>
+    <div class="proj-grid">
+
+      <!-- 메인 카드: 반 경제 시스템 -->
+      <a href="https://aoao-copung-student.onrender.com" target="_blank" class="proj-card main fu">
+        <div class="proj-tag">Live Service · 교육</div>
+        <div class="proj-name">반 경제 시스템<br>ClassWorld</div>
+        <div class="proj-desc">
+          학급 화폐·은행·주식·상점·직업을 하나로 통합한 교실 경제 플랫폼.<br>
+          선생님과 학생이 함께 운영하는 실전형 경제 체험 시스템입니다.
+        </div>
+        <div class="proj-stack">
+          <span class="proj-badge">Supabase</span>
+          <span class="proj-badge">Vanilla JS</span>
+          <span class="proj-badge">HTML/CSS</span>
+          <span class="proj-badge">Realtime DB</span>
+        </div>
+        <div class="proj-link">
+          aoao-copung-student.onrender.com
+          <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M2 12L12 2M12 2H5M12 2V9" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </div>
+      </a>
+
+      <!-- 서브 카드 1 -->
+      <div class="proj-card fu d1">
+        <div class="proj-tag">In Development</div>
+        <div class="proj-name">다음 프로젝트</div>
+        <div class="proj-desc">현재 코평 팀이 개발 중인 새로운 서비스입니다. 곧 공개됩니다.</div>
+        <div class="proj-stack">
+          <span class="proj-badge">Coming Soon</span>
+        </div>
+        <div class="proj-link" style="color:var(--muted)">준비 중 ···</div>
+      </div>
+
+    </div>
+  </div>
+</section>
 
 <section class="cta" id="contact">
   <div class="cta-inner fu">
